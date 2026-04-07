@@ -21,7 +21,8 @@ class Venta extends Model
         'total',
         'created_by',
         'updated_by',
-        'estado'
+        'estado',
+        'is_updated'
     ];
 
     protected $casts = [
@@ -31,7 +32,8 @@ class Venta extends Model
         'total' => 'float',
         'id_sucursal' => 'integer',
         'created_by' => 'integer',
-        'updated_by' => 'integer'
+        'updated_by' => 'integer',
+        'is_updated' => 'boolean'
     ];
 
     protected $hidden = ['created_at', 'updated_at', 'created_by', 'updated_by'];

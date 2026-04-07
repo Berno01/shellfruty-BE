@@ -12,6 +12,7 @@ use App\Venta\Application\UseCases\Venta\CreateVentaUseCase;
 use App\Venta\Application\UseCases\Venta\UpdateVentaUseCase;
 use App\Venta\Application\UseCases\Venta\CancelVentaUseCase;
 use App\Venta\Application\UseCases\Venta\EnviarVentaUseCase;
+use App\Venta\Application\UseCases\Venta\GetVentaHistoryUseCase;
 use App\Venta\Application\UseCases\Venta\GetIngredientesDictionaryUseCase;
 use App\Venta\Application\UseCases\Venta\ListMenusActivosUseCase;
 
@@ -24,6 +25,7 @@ class VentaController extends Controller
         private UpdateVentaUseCase $updateVenta,
         private CancelVentaUseCase $cancelVenta,
         private EnviarVentaUseCase $enviarVenta,
+        private GetVentaHistoryUseCase $getVentaHistory,
         private GetIngredientesDictionaryUseCase $getIngredientesDictionary,
         private ListMenusActivosUseCase $listMenusActivos
     ) {}
@@ -62,6 +64,23 @@ class VentaController extends Controller
         return response()->json([
             'success' => true,
             'data' => $venta->load('detalles.personalizaciones')
+        ]);
+    }
+
+    public function history(int $id): JsonResponse
+    {
+        $history = $this->getVentaHistory->execute($id);
+
+        if (!$history) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Venta no encontrada'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $history
         ]);
     }
 
@@ -123,8 +142,8 @@ class VentaController extends Controller
             'detalles.*.personalizaciones.*.cantidad' => 'required_with:detalles.*.personalizaciones|integer|min:0'
         ]);
 
-        // Validar que sea admin
-        if (!$this->updateVenta->isAdmin($request->id_usuario)) {
+        // Validar que sea admin o vendedor
+        if (!$this->updateVenta->canUpdate($request->id_usuario)) {
             return response()->json([
                 'success' => false,
                 'message' => 'No tienes permisos para actualizar ventas'

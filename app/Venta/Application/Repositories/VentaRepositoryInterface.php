@@ -10,6 +10,8 @@ interface VentaRepositoryInterface
     public function findByDateRange(string $fechaInicio, string $fechaFin, ?int $idSucursal = null): Collection;
     
     public function findById(int $id): ?Venta;
+
+    public function getHistoryByVentaId(int $id): ?array;
     
     public function create(array $ventaData, array $detalles, int $userId): Venta;
     

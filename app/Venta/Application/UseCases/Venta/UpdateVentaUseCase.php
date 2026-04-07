@@ -17,9 +17,14 @@ class UpdateVentaUseCase
         return $this->repository->update($id, $dto->toArray(), $dto->getDetalles(), $userId);
     }
 
-    public function isAdmin(int $userId): bool
+    public function canUpdate(int $userId): bool
     {
         $idRol = $this->repository->getUserRole($userId);
-        return $idRol === 1;
+        return in_array($idRol, [1, 2], true);
+    }
+
+    public function isAdmin(int $userId): bool
+    {
+        return $this->canUpdate($userId);
     }
 }

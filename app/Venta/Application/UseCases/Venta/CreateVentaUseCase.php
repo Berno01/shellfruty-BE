@@ -25,14 +25,7 @@ class CreateVentaUseCase
             return false;
         }
 
-        // Si es bot (id_rol = 3), debe tener personalizaciones
-        if ($idRol === 3) {
-            foreach ($detalles as $detalle) {
-                if (!isset($detalle['personalizaciones']) || empty($detalle['personalizaciones'])) {
-                    return false;
-                }
-            }
-        }
+        // Si es bot (id_rol = 3), ya no es obligatorio tener personalizaciones
 
         return true;
     }

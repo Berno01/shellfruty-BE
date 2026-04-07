@@ -60,6 +60,18 @@ class AppServiceProvider extends ServiceProvider
             \App\Usuario\Application\Repositories\UsuarioRepositoryInterface::class,
             \App\Usuario\Infrastructure\Repositories\EloquentUsuarioRepository::class
         );
+
+        // BotCatalog Module
+        $this->app->bind(
+            \App\BotCatalog\Application\Repositories\BotCatalogRepositoryInterface::class,
+            \App\BotCatalog\Infrastructure\Repositories\EloquentBotCatalogRepository::class
+        );
+
+        // Abastecimiento Module
+        $this->app->bind(
+            \App\Abastecimiento\Application\Repositories\AbastecimientoRepositoryInterface::class,
+            \App\Abastecimiento\Infrastructure\Repositories\EloquentAbastecimientoRepository::class
+        );
     }
 
     /**

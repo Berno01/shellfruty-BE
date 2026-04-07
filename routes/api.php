@@ -9,6 +9,7 @@ use App\Venta\Infrastructure\Controllers\VentaController;
 use App\Sucursal\Infrastructure\Controllers\SucursalController;
 use App\Dashboard\Infrastructure\Controllers\DashboardController;
 use App\Usuario\Infrastructure\Controllers\UsuarioController;
+use App\Abastecimiento\Infrastructure\Controllers\AbastecimientoController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -52,6 +53,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/venta', 'index');
         Route::get('/venta/ingredientes', 'getIngredientes');
         Route::get('/venta/menus', 'getMenus');
+        Route::get('/venta/{id}/historial', 'history');
         Route::get('/venta/{id}', 'show');
         Route::post('/venta', 'store');
         Route::put('/venta/{id}', 'update');
@@ -71,5 +73,19 @@ Route::prefix('v1')->group(function () {
     Route::controller(UsuarioController::class)->prefix('usuario')->group(function () {
         Route::post('/login', 'login');
         Route::post('/hash-password', 'hashPassword'); // Temporal para generar hashes
+    });
+
+    Route::controller(\App\BotCatalog\Infrastructure\Controllers\BotCatalogController::class)->prefix('bot')->group(function () {
+        Route::get('/catalogo', 'getCatalog');
+    });
+
+    Route::controller(AbastecimientoController::class)->prefix('abastecimiento')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/resumen', 'resumen');
+        Route::get('/saldo', 'saldo');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
     });
 });

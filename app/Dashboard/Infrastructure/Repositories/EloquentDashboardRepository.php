@@ -65,7 +65,7 @@ class EloquentDashboardRepository implements DashboardRepositoryInterface
             ->join('categoria', 'ingrediente.id_categoria', '=', 'categoria.id_categoria')
             ->whereDate('venta.fecha', '>=', $fechaInicio)
             ->whereDate('venta.fecha', '<=', $fechaFin)
-            ->where('venta.estado', 'ENVIADO')
+            ->whereIn('venta.estado', ['ENVIADO', 'ENTREGADO'])
             ->when($idSucursal !== null, function ($q) use ($idSucursal) {
                 $q->where('venta.id_sucursal', $idSucursal);
             })
