@@ -174,6 +174,7 @@ class EloquentVentaRepository implements VentaRepositoryInterface
                 'created_at' => $editedAt,
             ]);
 
+            unset($ventaData['fecha']);
             $ventaData['updated_by'] = $userId;
             $ventaData['is_updated'] = true;
             $venta->update($ventaData);
